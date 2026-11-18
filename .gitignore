@@ -1,0 +1,9 @@
+# Java compiled files
+*.class
+**/out/
+
+# VS Code settings
+.vscode/
+
+# Temporary files
+.dist/
