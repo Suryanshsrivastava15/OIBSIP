@@ -1,5 +1,7 @@
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class Account {
 
@@ -19,7 +21,7 @@ public class Account {
         transactions = new ArrayList<>();
     }
 
-    // Verify user PIN
+    // Authenticate user PIN
     public boolean authenticate(String enteredPin) {
         return pin.equals(enteredPin);
     }
@@ -34,7 +36,11 @@ public class Account {
         balance += amount;
 
         transactions.add(
-                new Transaction("DEPOSIT", amount, "Cash Deposit")
+                new Transaction(
+                        "DEPOSIT",
+                        amount,
+                        "Cash Deposit"
+                )
         );
 
         return true;
@@ -43,25 +49,33 @@ public class Account {
     // Withdraw money
     public boolean withdraw(double amount) {
 
-        if (!Double.isFinite(amount) || amount <= 0
+        if (!Double.isFinite(amount)
+                || amount <= 0
                 || amount > balance) {
+
             return false;
         }
 
         balance -= amount;
 
         transactions.add(
-                new Transaction("WITHDRAWAL", amount, "Cash Withdrawal")
+                new Transaction(
+                        "WITHDRAWAL",
+                        amount,
+                        "Cash Withdrawal"
+                )
         );
 
         return true;
     }
 
-    // Send money to another account
+    // Transfer money from this account
     boolean transferOut(double amount, String recipientId) {
 
-        if (!Double.isFinite(amount) || amount <= 0
+        if (!Double.isFinite(amount)
+                || amount <= 0
                 || amount > balance) {
+
             return false;
         }
 
@@ -92,29 +106,43 @@ public class Account {
         );
     }
 
-    // Display transaction history
+    // Display transaction history in console
     public void displayTransactionHistory() {
 
         if (transactions.isEmpty()) {
+
             System.out.println("No transactions available.");
             return;
         }
 
-        System.out.println("\n========== TRANSACTION HISTORY ==========");
+        System.out.println(
+                "\n========== TRANSACTION HISTORY =========="
+        );
 
         for (Transaction transaction : transactions) {
             System.out.println(transaction);
         }
 
-        System.out.println("=========================================");
+        System.out.println(
+                "========================================="
+        );
     }
 
-    // Getter methods
+    // Getter: User ID
     public String getUserId() {
         return userId;
     }
 
+    // Getter: Account balance
     public double getBalance() {
         return balance;
+    }
+
+    // Getter: Transaction history for GUI
+    public List<Transaction> getTransactions() {
+
+        return Collections.unmodifiableList(
+                new ArrayList<>(transactions)
+        );
     }
 }
